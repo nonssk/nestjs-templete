@@ -6,6 +6,7 @@ import { KafkaService } from './kafka.service';
 export class KafkaController implements OnModuleInit {
   constructor(private kafkaService: KafkaService) {}
   async onModuleInit() {
+    if (process.env.USE_KAFKA !== 'true') return;
     this.kafkaService.initKafka();
     await this.kafkaService.initProducer();
     await this.kafkaService.initConsumer(

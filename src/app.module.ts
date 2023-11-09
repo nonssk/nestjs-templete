@@ -10,7 +10,8 @@ import { AppService } from './app.service';
 import { AnimalModule } from './modules/animal';
 import { ProjectModule } from './modules/project';
 import { StoreModule } from './tools/store/store.module';
-import { KafkaModule } from './background/kafka/kafka.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './filters/httpException.filter';
 
 @Module({
   imports: [
@@ -21,14 +22,19 @@ import { KafkaModule } from './background/kafka/kafka.module';
       user: process.env.DATABASE_USER || '',
       pass: process.env.DATABASE_PASS || '',
     }),
-    KafkaModule,
     BackGroundModule,
     AnimalModule,
     ProjectModule,
     StoreModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
