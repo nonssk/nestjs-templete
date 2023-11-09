@@ -19,7 +19,7 @@ export class AppController {
     return res.status(HttpStatus.OK).respond('XXX-XX-XXXX', 'ok', result);
   }
 
-  @Get(':id')
+  @Get('app/:id')
   async getHelloId(@Req() req: Request) {
     const { id } = req.params;
     throw new HttpException(`Invalid ${id}`, HttpStatus.BAD_REQUEST);

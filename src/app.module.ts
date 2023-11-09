@@ -12,6 +12,10 @@ import { ProjectModule } from './modules/project';
 import { StoreModule } from './tools/store/store.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filters/httpException.filter';
+import { ElasticSearchModule } from './tools/elasticsearch/elasticsearch.module';
+import { ElasticSearchService } from './tools/elasticsearch/elasticsearch.service';
+import { LoggerModule } from './tools/logger/logger.module';
+import { LoggerService } from './tools/logger/logger.service';
 
 @Module({
   imports: [
@@ -22,14 +26,18 @@ import { HttpExceptionFilter } from './filters/httpException.filter';
       user: process.env.DATABASE_USER || '',
       pass: process.env.DATABASE_PASS || '',
     }),
+    ElasticSearchModule,
     BackGroundModule,
     AnimalModule,
     ProjectModule,
     StoreModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    ElasticSearchService,
+    LoggerService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
