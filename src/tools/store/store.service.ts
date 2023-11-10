@@ -11,16 +11,21 @@ export class StoreService {
   private readonly logger = new Logger(StoreService.name);
 
   constructor(@InjectModel(User.name) private user: Model<User>) {
-    const spacesEndpoint = new AWS.Endpoint(process.env.DIGITALOCEAN_URI ?? '');
-    this.store = new AWS.S3({
-      endpoint: spacesEndpoint,
-      accessKeyId: process.env.DIGITALOCEAN_ACCESS_KEY ?? '',
-      secretAccessKey: process.env.DIGITALOCEAN_SECRET ?? '',
-      s3ForcePathStyle: true,
-    });
+    if (process.env.USE_DIGITALOCEAN === 'true') {
+      const spacesEndpoint = new AWS.Endpoint(
+        process.env.DIGITALOCEAN_URI ?? '',
+      );
+      this.store = new AWS.S3({
+        endpoint: spacesEndpoint,
+        accessKeyId: process.env.DIGITALOCEAN_ACCESS_KEY ?? '',
+        secretAccessKey: process.env.DIGITALOCEAN_SECRET ?? '',
+        s3ForcePathStyle: true,
+      });
+    }
   }
 
   async processFile() {
+    if (process.env.USE_DIGITALOCEAN !== 'true') return;
     try {
       const Bucket = process.env.DIGITALOCEAN_BUCKET_NAME ?? '';
       const Prefix = process.env.DIGITALOCEAN_BUCKET_PATH ?? '';

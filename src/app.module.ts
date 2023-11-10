@@ -20,7 +20,11 @@ import { LoggerService } from './tools/logger/logger.service';
 @Module({
   imports: [
     ScheduleModule.forRoot(),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath:
+        process.env.NODE_ENV === 'development' ? 'development.env' : '.env',
+      isGlobal: true,
+    }),
     MongooseModule.forRoot(process.env.DATABASE_HOST || '', {
       dbName: process.env.DATABASE_NAME || '',
       user: process.env.DATABASE_USER || '',

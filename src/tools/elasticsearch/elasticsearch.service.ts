@@ -34,50 +34,15 @@ export class ElasticSearchService {
   };
 
   constructor() {
-    const { colorize } = winston.format;
-    const timestampFormat = winston.format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss',
-    });
+    if (process.env.USE_ELASTIC === 'true') {
+      const transports: winston.transport[] = [];
 
-    const printfFormat = winston.format.printf((info) => {
-      const { timestamp, level, message, ...meta } = info;
-      if (!meta) {
-        return `${timestamp} [${process.pid}] ${level}: ${message}`;
-      }
-
-      const { operation, correlationId } = meta;
-
-      const prefixPart = `${timestamp} [${process.pid}] ${level}:`;
-      const operationPart = operation ? ` [${operation}]` : '';
-      const messagePart = ` ${message}`;
-      const correlationIdPart = correlationId
-        ? ` - correlationId::${correlationId}`
-        : '';
-
-      return `${prefixPart}${operationPart}${messagePart}${correlationIdPart}`;
-    });
-
-    const consoleFormat =
-      process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'
-        ? winston.format.combine(timestampFormat, printfFormat)
-        : winston.format.combine(colorize(), timestampFormat, printfFormat);
-
-    const transports: winston.transport[] = [];
-
-    // * Add console transport
-    // transports.push(
-    //   new winston.transports.Console({
-    //     format: consoleFormat,
-    //     handleExceptions: true,
-    //   }),
-    // );
-
-    if (process.env.USE_ELASTIC === 'true')
       transports.push(this.getElasticsearchTransport());
 
-    this.logger = winston.createLogger({
-      transports,
-    });
+      this.logger = winston.createLogger({
+        transports,
+      });
+    }
   }
 
   private getElasticsearchTransport() {
@@ -197,18 +162,22 @@ export class ElasticSearchService {
   }
 
   info(message: string, meta?: Partial<LogMetaType> | undefined): void {
+    if (process.env.USE_ELASTIC !== 'true') return;
     this.logger.info(message, { ...this._defaultMeta, ...meta });
   }
 
   error(message: string, meta?: Partial<LogMetaType> | undefined): void {
+    if (process.env.USE_ELASTIC !== 'true') return;
     this.logger.error(message, { ...this._defaultMeta, ...meta });
   }
 
   debug(message: string, meta?: Partial<LogMetaType> | undefined): void {
+    if (process.env.USE_ELASTIC !== 'true') return;
     this.logger.debug(message, { ...this._defaultMeta, ...meta });
   }
 
   warn(message: string, meta?: Partial<LogMetaType> | undefined): void {
+    if (process.env.USE_ELASTIC !== 'true') return;
     this.logger.warn(message, { ...this._defaultMeta, ...meta });
   }
 
