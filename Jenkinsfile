@@ -13,17 +13,6 @@ pipeline {
                 }
             }
         }
-        stage('Run Tests') {
-            stages {
-                stage('Compile') {
-                    steps {
-                        script {
-                            echo 'Step Test'
-                        }   
-                    }
-                }
-            }
-        }
     }
 }
 
