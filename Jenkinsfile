@@ -8,8 +8,6 @@ pipeline {
             steps {
                 script {
                     sh 'npm version'
-                    sh 'yarn install'
-                    sh 'yarn global add typescript@4.4.3'
                 }
             }
         }
