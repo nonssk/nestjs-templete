@@ -4,7 +4,7 @@ pipeline {
     stage('Setup') {
       steps {
         script {
-          echo 'Success NAJA'
+          echo 'Success NA'
         }
       }
     }
