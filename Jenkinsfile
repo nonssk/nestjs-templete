@@ -3,10 +3,12 @@ pipeline {
     tools {
         nodejs '18.16.0'
     }
-    stage('Setup') {
-        steps {
-            script {
-                sh 'node -v'
+    stages {
+        stage('Setup') {
+            steps {
+                script {
+                    sh 'node -v'
+                }
             }
         }
     }
