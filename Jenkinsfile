@@ -27,16 +27,11 @@ pipeline {
             }
         }
         stage('build') {
-            agent {
-                docker {
-                    image 'node:18.16.0-alpine'
-                }
-            }
             steps {
                 script {
                     echo "Build project ${PROJECT_NAME} version ${env.VERSION}"
                     sh 'cp .env.example .env'
-                    sh "docker build -t ${PROJECT_NAME}:${env.VERSION} ."
+                    // sh "docker build -t ${PROJECT_NAME}:${env.VERSION} ."
                 }
             }
         }
