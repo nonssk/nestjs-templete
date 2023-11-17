@@ -13,6 +13,16 @@ pipeline {
                 }
             }
         }
+        stage('check version') {
+            steps {
+                script {
+                    def packageJson = readJSON file: 'package.json'
+                    def version = packageJson.version
+                    env.VERSION = version
+                    echo "Building and testing version ${env.VERSION}"
+                }
+            }
+        }
     }
 }
 
