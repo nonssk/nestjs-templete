@@ -9,7 +9,6 @@ pipeline {
         stage('Install') {
             steps {
                 script {
-                    sh 'npm install -g typescript@4.5.5'
                     sh 'yarn install'
                 }
             }
