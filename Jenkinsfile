@@ -31,7 +31,10 @@ pipeline {
                 script {
                     echo "Build project ${PROJECT_NAME} version ${env.VERSION}"
                     sh 'cp .env.example .env'
-                    sh "docker --version"
+                    sh "docker build -t ${PROJECT_NAME}:${env.VERSION} ."
+                    sh "docker image ls ."
+                    sh "docker rmi ${PROJECT_NAME}"
+                    sh "docker image ls ."
                 }
             }
         }
