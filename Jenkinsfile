@@ -33,7 +33,7 @@ pipeline {
                     sh 'cp .env.example .env'
                     sh "docker build -t ${PROJECT_NAME}:${env.VERSION} ."
                     sh "docker image ls ."
-                    sh "docker rmi ${PROJECT_NAME}"
+                    sh "docker rmi ${PROJECT_NAME}:${env.VERSION}"
                     sh "docker image ls ."
                 }
             }
