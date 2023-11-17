@@ -5,6 +5,10 @@ pipeline {
         nodejs 'node_18_16_0'
     }
 
+    environment {
+        PROJECT_NAME = 'nest-templete'
+    }
+
     stages {
         stage('Install') {
             steps {
@@ -18,7 +22,21 @@ pipeline {
                 script {
                     def version = sh(script: 'node -pe "require(\'./package.json\').version"', returnStdout: true).trim()
                     env.VERSION = version
-                    echo "Building and testing version ${env.VERSION}"
+                    echo "Install project ${PROJECT_NAME} version ${env.VERSION}"
+                }
+            }
+        }
+        stage('build') {
+            agent {
+                docker {
+                    image 'node:18.16.0-alpine'
+                }
+            }
+            steps {
+                script {
+                    echo "Build project ${PROJECT_NAME} version ${env.VERSION}"
+                    sh 'cp .env.example .env'
+                    sh "docker build -t ${PROJECT_NAME}:${env.VERSION} ."
                 }
             }
         }
