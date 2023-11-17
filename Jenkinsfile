@@ -16,7 +16,7 @@ pipeline {
         stage('check version') {
             steps {
                 script {
-                    def version = sh(script: "yarn version", returnStdout: true).trim()
+                    def version = sh(script: 'node -pe "require(\'./package.json\').version"', returnStdout: true).trim()
                     env.VERSION = version
                     echo "Building and testing version ${env.VERSION}"
                 }
