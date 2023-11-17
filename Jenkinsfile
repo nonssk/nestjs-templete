@@ -1,13 +1,15 @@
 pipeline {
     agent any
+
     tools {
-        nodejs '18.16.0'
+        nodejs 'node_18_16_0'
     }
+
     stages {
-        stage('Setup') {
+        stage('Install') {
             steps {
                 script {
-                    sh 'node -v'
+                    sh 'yarn install'
                 }
             }
         }
