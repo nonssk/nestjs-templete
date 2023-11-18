@@ -42,6 +42,7 @@ pipeline {
                     sh "docker tag ${PROJECT_NAME} nonssk403/nest-templete:${env.VERSION}"
                     sh "docker push nonssk403/nest-templete:${env.VERSION}"
                     sh "docker rmi ${PROJECT_NAME}"
+                    sh "docker rmi nonssk403/nest-templete:${env.VERSION}"
                 }
             }
         }
