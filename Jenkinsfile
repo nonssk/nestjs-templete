@@ -35,6 +35,15 @@ pipeline {
                 }
             }
         }
+        stage('public') {
+            steps {
+                script {
+                    sh "docker login -u nonssk403 -p dckr_pat_kNNn2pcFGwxRcjB-2mYDili0I8s"
+                    sh "docker tag ${PROJECT_NAME} nonssk403/nest-templete:${env.VERSION}"
+                    sh "docker push nonssk403/nest-templete:${env.VERSION}"
+                }
+            }
+        }
     }
 }
 
