@@ -17,6 +17,13 @@ pipeline {
                 }
             }
         }
+        stage('Test') {
+            steps {
+                script {
+                    sh 'yarn test'
+                }
+            }
+        }
         stage('check version') {
             steps {
                 script {
